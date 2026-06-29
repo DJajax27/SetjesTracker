@@ -30,6 +30,10 @@
 ## Styling
 - **Tailwind CSS** — utility-first, mobile-first
 
+## Testing
+- **Vitest** — unit- en integratietests; draait in dezelfde Vite-configuratie, geen aparte build-setup nodig
+- Script: `npm test` (watch-modus) en `npm run test:run` (CI, eenmalig uitvoeren)
+
 ## Tooling
 - Vite voor bundling en dev-server
 - ESLint + Prettier voor codekwaliteit
