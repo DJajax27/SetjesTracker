@@ -18,9 +18,10 @@
 
 1. Globale design tokens (kleuren, spacing, typografie)
 2. ~~Responsive layout~~ — basisresponsiviteit (max-width kolom, body-achtergrond) gerealiseerd in Fase 1
-3. Detailpagina per training (bekijk/bewerk/verwijder een afgelopen training + template verwijderen)
-4. Inline bewerken van sets (swipe-to-delete of edit-knop)
-5. Lege-staat illustraties en loading-skeletons
+3. Sessie afronden met een "Opslaan"-knop op het sessie-scherm; na opslaan terug naar home
+4. Sessie verwijderen vanuit de geschiedenis; template verwijderen vanuit het home-scherm
+5. Inline bewerken van sets (swipe-to-delete of edit-knop)
+6. Lege-staat illustraties en loading-skeletons
 
 ---
 
