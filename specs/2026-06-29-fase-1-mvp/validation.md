@@ -95,6 +95,13 @@ Draai `npm run test:run` — alle tests moeten slagen voor merge:
 
 **Verwacht:** drie sessies in de lijst (twee "Rug & Biceps", één "Push day"), gesorteerd nieuwste bovenaan.
 
+## Responsive design checks
+Controleer op zowel een smal (≤390 px, bijv. iPhone) als een breed scherm (≥1280 px, bijv. laptop):
+
+- [ ] Op mobiel: layout vult het volledige scherm; header en footer zijn zichtbaar; formulieren zijn bruikbaar met touch
+- [ ] Op desktop: content gecentreerd in een kolom van max. 640 px; achtergrond buiten de kolom heeft een andere kleur; geen horizontale scroll
+- [ ] Tekst, knoppen en invoervelden schalen correct mee op beide formaten
+
 ## Technische checks
 - [ ] `npm run test:run` slaagt — alle 6 Vitest tests groen
 - [ ] `npm run build` slaagt zonder TypeScript-fouten

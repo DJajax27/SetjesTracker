@@ -32,11 +32,12 @@
 
 ### 5. Layout component
 Elk onderdeel staat in een eigen bestand onder `src/components/layout/`:
-- `Layout.css` — structuur-stijlen (geen Tailwind); geïmporteerd in `Layout.tsx`
+- `Layout.css` — structuur-stijlen én responsive regels (geen Tailwind); geïmporteerd in `Layout.tsx`
 - `Header.tsx` — `<header>` element; props: `title`, `subtitle?`, `back?`, `actions?`
 - `Footer.tsx` — `<footer>` element; sticky bottom-nav met NavLink naar Home en Geschiedenis
 - `Layout.tsx` — combineert `<Header>`, `<main className="layout-main">` en `<Footer>`; importeert `Layout.css`
 - Pas alle schermen aan om `<Layout>` te gebruiken in plaats van eigen header/wrapper
+- Responsive: mobiel is full-width; op `sm` (≥640 px) wordt `.layout` beperkt tot `max-width: 640px` en gecentreerd; achtergrond van `body` springt op desktop op een andere kleur om de gecentreerde kolom zichtbaar te maken
 
 ### 6. Scherm: Home (`/`)
 - Lijst van alle templates

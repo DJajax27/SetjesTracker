@@ -28,7 +28,9 @@
 - **Recharts** — lichtgewicht, React-native, voldoende voor lijn- en bargrafieken
 
 ## Styling
-- **Tailwind CSS** — utility-first, mobile-first
+- **Tailwind CSS** — utility-first, mobile-first; breakpoints gebruikt in code: `sm` (640 px) en `md` (768 px)
+- **Responsive strategie**: mobile-first baselines in Tailwind + eigen CSS; op `sm`+ krijgt de layout een `max-width: 640px` en wordt gecentreerd zodat de app op desktop als een smalle kolom verschijnt
+- **Layout.css** beheert de structuur-responsiviteit (max-width, centreren, extra padding op desktop); paginaspecifieke responsiviteit via Tailwind utilities
 
 ## Testing
 - **Vitest** — unit- en integratietests; draait in dezelfde Vite-configuratie, geen aparte build-setup nodig

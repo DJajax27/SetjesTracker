@@ -30,6 +30,7 @@ Na deze fase is de kernloop bruikbaar: template aanmaken → sessie starten → 
 | Gewichtseenheid | Vast op `kg` in Fase 1 | Scherm eenvoudig houden; `unit` kolom staat klaar voor uitbreiding |
 | Data-laag | Dexie als primaire bron van waarheid | Werkt offline, IndexedDB heeft ruim genoeg opslaglimiet |
 | UI-state | Zustand naast Dexie | Scheiding tussen persistente data en vluchtige formulier-/sessiestaat |
+| Responsive layout | Mobile-first; `max-width: 640px` gecentreerd op `sm`+ | App wordt primair op mobiel gebruikt; op desktop verschijnt de UI als smalle kolom met achtergrond |
 
 ## Context
 - Doelgroep: de gebruiker zelf + vrienden/familie; geen accounts of gedeelde database

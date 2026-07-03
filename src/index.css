@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media (min-width: 640px) {
+  body {
+    background-color: #e5e7eb;
+  }
+}

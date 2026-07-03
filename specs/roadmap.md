@@ -13,21 +13,23 @@
 ---
 
 ## Fase 2 — UI polish
-> Doel: de app prettig en snel bruikbaar maken op mobiel.
 
-1. Tailwind CSS installeren + globale design tokens (kleuren, spacing, typografie)
-2. Responsive layout met bottom-navigation voor de drie hoofdschermen
-3. Detailpagina per training (bekijk/bewerk/verwijder een afgelopen training)
+> Doel: de app prettig en snel bruikbaar maken op mobiel én desktop.
+
+1. Globale design tokens (kleuren, spacing, typografie)
+2. ~~Responsive layout~~ — basisresponsiviteit (max-width kolom, body-achtergrond) gerealiseerd in Fase 1
+3. Detailpagina per training (bekijk/bewerk/verwijder een afgelopen training + template verwijderen)
 4. Inline bewerken van sets (swipe-to-delete of edit-knop)
 5. Lege-staat illustraties en loading-skeletons
 
 ---
 
 ## Fase 3 — Progressie & analytics
+
 > Doel: inzicht geven in verbetering over tijd.
 
 1. Progressiegrafiek per oefening — maximaal gewicht per sessie (lijndiagram)
-2. Volumegrafiek per oefening — totaal gewicht per sessie (sets × reps × kg)
+2. Volumegrafiek per oefening — totaal gewicht per sessie (sets x reps x kg)
 3. Persoonlijk record (PR) detectie en highlight in de UI
 4. Samenvatting-dashboard: totaal trainingen, favoriete oefeningen, langste streak
 5. JSON-export van alle data (voor backup)
