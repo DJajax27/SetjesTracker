@@ -12,16 +12,18 @@
 
 ---
 
-## Fase 2 — UI polish
+## ~~Fase 2 — UI polish~~ — Afgerond
 
 > Doel: de app prettig en snel bruikbaar maken op mobiel én desktop.
 
-1. Globale design tokens (kleuren, spacing, typografie)
+1. ~~Globale design tokens (kleuren, spacing, typografie) — CSS custom properties + Tailwind `theme.extend`~~
 2. ~~Responsive layout~~ — basisresponsiviteit (max-width kolom, body-achtergrond) gerealiseerd in Fase 1
-3. Sessie afronden met een "Opslaan"-knop op het sessie-scherm; na opslaan terug naar home
-4. Sessie verwijderen vanuit de geschiedenis; template verwijderen vanuit het home-scherm
-5. Inline bewerken van sets (swipe-to-delete of edit-knop)
-6. Lege-staat illustraties en loading-skeletons
+3. ~~Sessie afronden met een "Opslaan"-knop op het sessie-scherm; na opslaan terug naar home~~
+4. ~~Sessies verschijnen pas in de geschiedenis na opslaan (`completedAt`-filter op `loadHistory`)~~
+5. ~~Sessie verwijderen vanuit de geschiedenis; template verwijderen vanuit het home-scherm~~
+6. ~~Inline set verwijderen — delete-knop per set met 44 px raakoppervlak~~
+7. ~~Vorige sessie tonen per oefening — hint met reps × gewicht uit de laatste afgeronde sessie~~
+8. ~~3-state oefening-kaart (idle → actief → afgerond), bewerkbare sets, instellingen-popup met bottom sheet~~
 
 ---
 

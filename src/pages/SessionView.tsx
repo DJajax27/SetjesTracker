@@ -1,83 +1,179 @@
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useWorkoutStore } from '../store/workoutStore'
 import Layout from '../components/layout/Layout'
 import type { TemplateExercise } from '../db/db'
 
-function ExerciseCard({ exercise }: { exercise: TemplateExercise }) {
-  const { sets, addSet, deleteSet } = useWorkoutStore()
-  const [reps, setReps] = useState('')
-  const [weight, setWeight] = useState('')
-  const exerciseSets = sets.filter((s) => s.exerciseId === exercise.id)
+type CardState = 'idle' | 'active' | 'done'
+type LocalSet = { reps: string; weight: string }
+type ExerciseCardProps = { exercise: TemplateExercise }
+type CardHandle = { flush: () => Promise<void> }
 
-  const handleAddSet = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const r = parseInt(reps)
-    const w = parseFloat(weight)
-    if (!r || !w) return
-    await addSet(exercise.id!, r, w)
-    setReps('')
-    setWeight('')
+const ExerciseCard = forwardRef<CardHandle, ExerciseCardProps>(function ExerciseCard({ exercise }, ref) {
+  const { sets, previousSetsByExercise, addSet } = useWorkoutStore()
+  const [cardState, setCardState] = useState<CardState>('idle')
+  const [localSets, setLocalSets] = useState<LocalSet[]>([])
+
+  const exerciseSets = sets.filter((s) => s.exerciseId === exercise.id)
+  const prevSets = previousSetsByExercise[exercise.id!]
+  const isFirstTime = prevSets === undefined
+
+  const saveLocalSets = async () => {
+    const valid = localSets.filter((s) => parseInt(s.reps) > 0 && parseFloat(s.weight) > 0)
+    for (const s of valid) {
+      await addSet(exercise.id!, parseInt(s.reps), parseFloat(s.weight))
+    }
   }
 
+  useImperativeHandle(ref, () => ({
+    flush: async () => {
+      if (cardState !== 'active') return
+      await saveLocalSets()
+    },
+  }))
+
+  const handleStart = () => {
+    const firstPrev = prevSets?.[0]
+    setLocalSets([{ reps: firstPrev ? String(firstPrev.reps) : '', weight: firstPrev ? String(firstPrev.weight) : '' }])
+    setCardState('active')
+  }
+
+  const handleAddSet = () => {
+    const idx = localSets.length
+    const nextPrev = prevSets?.[idx]
+    setLocalSets((prev) => [
+      ...prev,
+      { reps: nextPrev ? String(nextPrev.reps) : '', weight: nextPrev ? String(nextPrev.weight) : '' },
+    ])
+  }
+
+  const handleRemoveSet = (idx: number) => {
+    setLocalSets((prev) => prev.filter((_, i) => i !== idx))
+  }
+
+  const handleChange = (idx: number, field: 'reps' | 'weight', value: string) => {
+    setLocalSets((prev) => prev.map((s, i) => (i === idx ? { ...s, [field]: value } : s)))
+  }
+
+  const handleFinish = async () => {
+    await saveLocalSets()
+    setCardState('done')
+  }
+
+  // ── Idle ──────────────────────────────────────────────────────────────────
+  if (cardState === 'idle') {
+    const prevSummary = isFirstTime
+      ? 'First time'
+      : prevSets.map((s) => `${s.reps}×${s.weight}`).join(' · ')
+
+    return (
+      <div className="bg-white rounded-xl shadow-sm border p-4">
+        <p className="font-semibold">{exercise.name}</p>
+        <p className="text-xs text-gray-400 mt-0.5 mb-3">{prevSummary}</p>
+        <button
+          onClick={handleStart}
+          className="w-full bg-accent text-white py-2 rounded-lg text-sm font-medium"
+        >
+          Starten
+        </button>
+      </div>
+    )
+  }
+
+  // ── Done ──────────────────────────────────────────────────────────────────
+  if (cardState === 'done') {
+    return (
+      <div className="bg-white rounded-xl shadow-sm border p-4">
+        <div className="flex items-center justify-between">
+          <p className="font-semibold">{exercise.name}</p>
+          <span className="text-xs text-gray-500">
+            {exerciseSets.length > 0 ? `${exerciseSets.length} sets ✓` : 'Overgeslagen'}
+          </span>
+        </div>
+        {exerciseSets.length > 0 && (
+          <p className="text-xs text-gray-400 mt-1">
+            {exerciseSets.map((s) => `${s.reps}×${s.weight} kg`).join(' · ')}
+          </p>
+        )}
+      </div>
+    )
+  }
+
+  // ── Active ────────────────────────────────────────────────────────────────
   return (
     <div className="bg-white rounded-xl shadow-sm border p-4">
       <h3 className="font-semibold mb-3">{exercise.name}</h3>
+      {isFirstTime && <p className="text-xs text-gray-400 mb-2">First time</p>}
 
-      {exerciseSets.length > 0 && (
-        <div className="mb-3 space-y-1">
-          {exerciseSets.map((s, i) => (
-            <div key={s.id} className="flex items-center justify-between text-sm">
-              <span className="text-gray-400 w-12">Set {i + 1}</span>
-              <span className="flex-1">
-                {s.reps} herh. × {s.weight} kg
-              </span>
-              <button onClick={() => deleteSet(s.id!)} className="text-red-400 text-xs ml-2">
-                verwijder
+      <div className="space-y-3 mb-3">
+        {localSets.map((s, i) => (
+          <div key={i}>
+            <div className="flex items-end gap-2">
+              <span className="text-gray-400 text-sm w-10 pb-2 flex-shrink-0">Set {i + 1}</span>
+              <div className="flex-1">
+                {i === 0 && <label className="block text-xs text-gray-500 mb-1">Herh.</label>}
+                <input
+                  type="number"
+                  value={s.reps}
+                  onChange={(e) => handleChange(i, 'reps', e.target.value)}
+                  placeholder="5"
+                  min="1"
+                  className="w-full border rounded-lg px-2 py-1.5 text-sm"
+                />
+              </div>
+              <div className="flex-1">
+                {i === 0 && <label className="block text-xs text-gray-500 mb-1">Gewicht (kg)</label>}
+                <input
+                  type="number"
+                  value={s.weight}
+                  onChange={(e) => handleChange(i, 'weight', e.target.value)}
+                  placeholder="60"
+                  min="0"
+                  step="0.5"
+                  className="w-full border rounded-lg px-2 py-1.5 text-sm"
+                />
+              </div>
+              <button
+                onClick={() => handleRemoveSet(i)}
+                className="text-danger text-lg leading-none min-h-[44px] min-w-[44px] flex items-center justify-center flex-shrink-0"
+                aria-label="Set verwijderen"
+              >
+                ×
               </button>
             </div>
-          ))}
-        </div>
-      )}
+            {!isFirstTime && prevSets[i] && (
+              <p className="text-xs text-gray-400 mt-0.5 pl-12">
+                vorige: {prevSets[i].reps} × {prevSets[i].weight} kg
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
 
-      <form onSubmit={handleAddSet} className="flex gap-2 items-end">
-        <div className="flex-1">
-          <label className="block text-xs text-gray-500 mb-1">Herhalingen</label>
-          <input
-            type="number"
-            value={reps}
-            onChange={(e) => setReps(e.target.value)}
-            placeholder="5"
-            min="1"
-            className="w-full border rounded-lg px-2 py-1.5 text-sm"
-          />
-        </div>
-        <div className="flex-1">
-          <label className="block text-xs text-gray-500 mb-1">Gewicht (kg)</label>
-          <input
-            type="number"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-            placeholder="60"
-            min="0"
-            step="0.5"
-            className="w-full border rounded-lg px-2 py-1.5 text-sm"
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm whitespace-nowrap"
-        >
-          + Set
-        </button>
-      </form>
+      <button
+        type="button"
+        onClick={handleAddSet}
+        className="w-full border border-accent text-accent py-1.5 rounded-lg text-sm mb-3"
+      >
+        + Set
+      </button>
+
+      <button
+        onClick={handleFinish}
+        className="w-full border border-gray-200 text-gray-500 py-2 rounded-lg text-sm"
+      >
+        Oefening afronden
+      </button>
     </div>
   )
-}
+})
 
 export default function SessionView() {
   const { id } = useParams<{ id: string }>()
-  const { activeSession, activeTemplate, sessionExercises, loadSession } = useWorkoutStore()
+  const navigate = useNavigate()
+  const { activeSession, activeTemplate, sessionExercises, loadSession, completeSession } =
+    useWorkoutStore()
+  const cardRefs = useRef<Array<CardHandle | null>>([])
 
   useEffect(() => {
     if (id) loadSession(Number(id))
@@ -97,12 +193,26 @@ export default function SessionView() {
     month: 'long',
   })
 
+  const handleComplete = async () => {
+    await Promise.all(cardRefs.current.map((r) => r?.flush()))
+    await completeSession(activeSession.id!)
+    navigate('/')
+  }
+
   return (
     <Layout title={activeTemplate?.name ?? '—'} subtitle={subtitle} back>
       <div className="space-y-4">
-        {sessionExercises.map((ex) => (
-          <ExerciseCard key={ex.id} exercise={ex} />
+        {sessionExercises.map((ex, i) => (
+          <ExerciseCard key={ex.id} ref={(el) => { cardRefs.current[i] = el }} exercise={ex} />
         ))}
+      </div>
+      <div className="mt-6">
+        <button
+          onClick={handleComplete}
+          className="w-full bg-primary text-white py-3 rounded-xl font-semibold text-base"
+        >
+          Sessie opslaan
+        </button>
       </div>
     </Layout>
   )
