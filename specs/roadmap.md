@@ -27,12 +27,27 @@
 
 ---
 
-## Fase 3 — Progressie & analytics
+## ~~Fase 3 — Navigatie & Doelen~~ — Afgerond
 
-> Doel: inzicht geven in verbetering over tijd.
+> Doel: drie hoofdschermen (Home, Doelen, Progressie) via een bottom tab-bar, en een volledig doelensysteem met reminders.
 
-1. Progressiegrafiek per oefening — maximaal gewicht per sessie (lijndiagram)
-2. Volumegrafiek per oefening — totaal gewicht per sessie (sets x reps x kg)
-3. Persoonlijk record (PR) detectie en highlight in de UI
-4. Samenvatting-dashboard: totaal trainingen, favoriete oefeningen, langste streak
-5. JSON-export van alle data (voor backup)
+1. ~~Bottom tab-navigatie — Home, Doelen, Progressie als vaste tabs onderaan~~
+2. ~~Doelen aanmaken — naam, beschrijving, tijdsframe (einddatum of dagelijks herhalend)~~
+3. ~~Dagelijks afvinken — goal markeren als behaald voor vandaag~~
+4. ~~Reminders — Web Notifications (permissie + service worker) voor dagelijkse doelen~~
+
+---
+
+## Fase 4 — Progressie & analytics
+
+> Doel: inzicht geven in verbetering over tijd via grafieken en statistieken.
+
+1. Training- en oefeningselector — kies een template en vervolgens een oefening
+2. Grafiek 1: geschatte 1RM per sessie — 1RM = gewicht × (1 + herhalingen / 30), lijndiagram
+3. Grafiek 2: trainingsvolume per sessie — totaal gewicht (sets × reps × kg), staafdiagram
+4. Grafiek 3: scatterplot gewicht vs. herhalingen — visueel overzicht van alle gelogde sets
+5. Progressiegrafiek per oefening — maximaal gewicht per sessie (lijndiagram)
+6. Volumegrafiek per oefening — totaal gewicht per sessie (sets x reps x kg)
+7. Persoonlijk record (PR) detectie en highlight in de UI
+8. Samenvatting-dashboard: totaal trainingen, favoriete oefeningen, langste streak
+9. JSON-export van alle data (voor backup)
