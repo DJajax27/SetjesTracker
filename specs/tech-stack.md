@@ -10,19 +10,21 @@
   ```
   templates          — id, name
   exercises          — id, templateId, name, order
-  sessions           — id, templateId, date
+  sessions           — id, templateId, date, completedAt?
   sets               — id, sessionId, exerciseId, reps, weight, unit ('kg')
+  goals              — id, name, description, type ('deadline'|'recurring'), targetDate?, completedDates[]
   ```
   - `templates` zijn herbruikbare trainingssjablonen (eenmalig aangemaakt)
   - `sessions` zijn concrete uitvoeringen van een template (één per trainingsdag)
   - `sets` horen bij een sessie én een oefening uit de bijbehorende template
+  - `goals` zijn persoonlijke doelen; `completedDates` is een JSON-array van datums (dag-granulariteit)
 
 ## State Management
 - **Zustand** voor UI-state (actieve sessie, formulieren, geladen templates)
 - Dexie fungeert als de primaire bron van waarheid; Zustand houdt de in-memory view bij
 
 ## Routing
-- **React Router v6** — routes: `/`, `/template/new`, `/session/:id`, `/history`
+- **React Router v6** — routes: `/`, `/template/new`, `/session/:id`, `/history`, `/goals`, `/goals/new`, `/progress`
 
 ## Grafieken
 - **Recharts** — lichtgewicht, React-native, voldoende voor lijn- en bargrafieken

@@ -41,12 +41,24 @@ export default function Home() {
   }
 
   const actions = (
-    <Link
-      to="/template/new"
-      className="bg-accent text-white px-4 py-2 rounded-lg text-sm font-medium"
-    >
-      + Nieuw
-    </Link>
+    <div className="flex items-center gap-2">
+      <Link
+        to="/history"
+        className="text-gray-400 min-h-[44px] min-w-[44px] flex items-center justify-center"
+        aria-label="Geschiedenis"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+        </svg>
+      </Link>
+      <Link
+        to="/template/new"
+        className="bg-accent text-white px-4 py-2 rounded-lg text-sm font-medium"
+      >
+        + Nieuw
+      </Link>
+    </div>
   )
 
   return (

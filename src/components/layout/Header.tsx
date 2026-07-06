@@ -1,3 +1,4 @@
+import './Header.css'
 import { useNavigate } from 'react-router-dom'
 
 interface HeaderProps {

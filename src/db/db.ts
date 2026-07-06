@@ -36,12 +36,24 @@ export interface SessionExercise {
   name: string
 }
 
+export interface Goal {
+  id?: number
+  name: string
+  description: string
+  type: 'deadline' | 'recurring'
+  targetDate?: string
+  completedDates: string[]
+  notifyEnabled?: boolean
+  notifyTime?: string
+}
+
 class WorkoutDB extends Dexie {
   templates!: Table<WorkoutTemplate>
   exercises!: Table<TemplateExercise>
   sessions!: Table<WorkoutSession>
   sets!: Table<WorkoutSet>
   sessionExercises!: Table<SessionExercise>
+  goals!: Table<Goal>
 
   constructor() {
     super('WorkoutLogger')
@@ -60,6 +72,9 @@ class WorkoutDB extends Dexie {
     this.version(3).stores({
       sets: '++id, sessionId, exerciseId, sessionExerciseId',
       sessionExercises: '++id, sessionId',
+    })
+    this.version(4).stores({
+      goals: '++id',
     })
   }
 }
