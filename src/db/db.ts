@@ -3,6 +3,7 @@ import Dexie, { type Table } from 'dexie'
 export interface WorkoutTemplate {
   id?: number
   name: string
+  category?: string
 }
 
 export interface TemplateExercise {

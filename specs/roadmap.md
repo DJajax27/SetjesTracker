@@ -38,16 +38,16 @@
 
 ---
 
-## Fase 4 — Design refresh
+## ~~Fase 4 — Design refresh~~ — Afgerond
 
 > Doel: de volledige app voorzien van een vernieuwd visueel ontwerp — bordeauxrood kleurpalet, hero-header op Home, stat-cards met echte data, en een consistente stijl op alle schermen.
 
-1. Nieuw kleurpalet — bordeauxrood vervangt blauw in alle design tokens en Tailwind-config
-2. Hero-header op Home — gradient achtergrond, datum, subtitle en grote paginatitel
-3. Stat-cards — Streak, Deze week en Totaal berekend uit Dexie-data
-4. Training-kaarten redesign — categorie-badge, oefeningen-teller, geschatte duur en Start-knop
-5. Tab-navigatie restyling — pill-achtige actieve staat, iconen en merkkleur
-6. Alle overige schermen — Goals, History, Session, GoalNew/Edit, Progress consistent bijgewerkt
+1. ~~Nieuw kleurpalet — bordeauxrood vervangt blauw in alle design tokens en Tailwind-config~~
+2. ~~Hero-header op Home — gradient achtergrond, datum, subtitle en grote paginatitel~~
+3. ~~Stat-cards — Streak, Deze week en Totaal berekend uit Dexie-data~~
+4. ~~Training-kaarten redesign — categorie-badge, oefeningen-teller, geschatte duur en Start-knop~~
+5. ~~Tab-navigatie restyling — pill-achtige actieve staat, iconen en merkkleur~~
+6. ~~Alle overige schermen — Goals, History, Session, GoalNew/Edit, Progress consistent bijgewerkt~~
 
 ---
 

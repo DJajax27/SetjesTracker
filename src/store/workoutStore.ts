@@ -16,9 +16,9 @@ interface WorkoutStore {
   history: SessionWithName[]
 
   loadTemplates: () => Promise<void>
-  createTemplate: (name: string, exerciseNames: string[]) => Promise<void>
+  createTemplate: (name: string, exerciseNames: string[], category?: string) => Promise<void>
   renameTemplate: (templateId: number, name: string) => Promise<void>
-  updateTemplate: (templateId: number, name: string, keptExerciseIds: number[], newExerciseNames: string[]) => Promise<void>
+  updateTemplate: (templateId: number, name: string, keptExerciseIds: number[], newExerciseNames: string[], category?: string) => Promise<void>
   renameSession: (sessionId: number, name: string) => Promise<void>
   startSession: (templateId: number) => Promise<number>
   loadSession: (sessionId: number) => Promise<void>
@@ -53,8 +53,8 @@ export const useWorkoutStore = create<WorkoutStore>((set, get) => ({
     set({ templates })
   },
 
-  createTemplate: async (name: string, exerciseNames: string[]) => {
-    const templateId = (await db.templates.add({ name })) as number
+  createTemplate: async (name: string, exerciseNames: string[], category?: string) => {
+    const templateId = (await db.templates.add({ name, category })) as number
     for (let i = 0; i < exerciseNames.length; i++) {
       await db.exercises.add({ templateId, name: exerciseNames[i], order: i })
     }
@@ -75,8 +75,8 @@ export const useWorkoutStore = create<WorkoutStore>((set, get) => ({
     }))
   },
 
-  updateTemplate: async (templateId: number, name: string, keptExerciseIds: number[], newExerciseNames: string[]) => {
-    await db.templates.update(templateId, { name })
+  updateTemplate: async (templateId: number, name: string, keptExerciseIds: number[], newExerciseNames: string[], category?: string) => {
+    await db.templates.update(templateId, { name, category })
     const allExercises = await db.exercises.where('templateId').equals(templateId).toArray()
     const toDelete = allExercises.filter((ex) => !keptExerciseIds.includes(ex.id!))
     for (const ex of toDelete) {
@@ -87,7 +87,7 @@ export const useWorkoutStore = create<WorkoutStore>((set, get) => ({
       await db.exercises.add({ templateId, name: newExerciseNames[i], order: keptExerciseIds.length + i })
     }
     set((s) => ({
-      templates: s.templates.map((t) => (t.id === templateId ? { ...t, name } : t)),
+      templates: s.templates.map((t) => (t.id === templateId ? { ...t, name, category } : t)),
       history: s.history.map((h) => (h.templateId === templateId ? { ...h, templateName: name } : h)),
     }))
   },

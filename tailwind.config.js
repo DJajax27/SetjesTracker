@@ -6,6 +6,7 @@ export default {
       colors: {
         primary: 'var(--color-primary)',
         accent: 'var(--color-accent)',
+        'accent-light': 'var(--color-accent-light)',
         danger: 'var(--color-danger)',
       },
     },
