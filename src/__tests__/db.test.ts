@@ -9,13 +9,13 @@ beforeEach(async () => {
 })
 
 describe('schema', () => {
-  it('opens with the four expected tables', () => {
+  it('opens with the expected tables', () => {
     const tableNames = db.tables.map((t) => t.name).sort()
-    expect(tableNames).toEqual(['exercises', 'sessions', 'sets', 'templates'])
+    expect(tableNames).toEqual(['exercises', 'sessionExercises', 'sessions', 'sets', 'templates'])
   })
 
-  it('is at version 2', () => {
-    expect(db.verno).toBe(2)
+  it('is at version 3', () => {
+    expect(db.verno).toBe(3)
   })
 })
 

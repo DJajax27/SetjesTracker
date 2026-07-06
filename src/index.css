@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-primary: #000000;
+  --color-accent: #2563eb;
+  --color-accent-dark: #1d4ed8;
+  --color-danger: #ef4444;
+  --color-danger-dark: #dc2626;
+  --color-text: #111827;
+  --color-text-muted: #6b7280;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-bg: #f9fafb;
+}
+
 @media (min-width: 640px) {
   body {
     background-color: #e5e7eb;

@@ -15,6 +15,7 @@ beforeEach(async () => {
     activeTemplate: null,
     sessionExercises: [],
     sets: [],
+    previousSetsByExercise: {},
     history: [],
   })
 })
@@ -94,6 +95,141 @@ describe('addSet / deleteSet', () => {
   })
 })
 
+describe('loadSession — previousSetsByExercise', () => {
+  it('maps previous sets by exerciseId for the most recent session that has them', async () => {
+    await store().createTemplate('Push day', ['Bench press'])
+    await store().loadTemplates()
+    const templateId = store().templates[0].id!
+    const exerciseId = store().sessionExercises[0]?.id ?? (await (async () => {
+      const firstId = await store().startSession(templateId)
+      await store().loadSession(firstId)
+      return store().sessionExercises[0].id!
+    })())
+
+    const firstId = await store().startSession(templateId)
+    await store().loadSession(firstId)
+    const exId = store().sessionExercises[0].id!
+    await store().addSet(exId, 5, 100)
+
+    const secondId = await store().startSession(templateId)
+    await store().loadSession(secondId)
+
+    expect(store().previousSetsByExercise[exId]).toHaveLength(1)
+    expect(store().previousSetsByExercise[exId][0]).toMatchObject({ reps: 5, weight: 100 })
+  })
+
+  it('falls back to the last session that has sets when the most recent has none', async () => {
+    await store().createTemplate('Push day', ['Bench press'])
+    await store().loadTemplates()
+    const templateId = store().templates[0].id!
+
+    // Session 1: log a set
+    const firstId = await store().startSession(templateId)
+    await store().loadSession(firstId)
+    const exId = store().sessionExercises[0].id!
+    await store().addSet(exId, 5, 100)
+
+    // Session 2: log nothing (empty session)
+    await store().startSession(templateId)
+
+    // Session 3: should still see session 1's sets
+    const thirdId = await store().startSession(templateId)
+    await store().loadSession(thirdId)
+
+    expect(store().previousSetsByExercise[exId]).toHaveLength(1)
+    expect(store().previousSetsByExercise[exId][0]).toMatchObject({ reps: 5, weight: 100 })
+  })
+
+  it('returns empty record when no prior session exists', async () => {
+    await store().createTemplate('Push day', ['Bench press'])
+    await store().loadTemplates()
+    const sessionId = await store().startSession(store().templates[0].id!)
+    await store().loadSession(sessionId)
+
+    expect(store().previousSetsByExercise).toEqual({})
+  })
+})
+
+describe('completeSession', () => {
+  it('sets completedAt on the session in the database', async () => {
+    await store().createTemplate('Push day', ['Bench press'])
+    await store().loadTemplates()
+    const sessionId = await store().startSession(store().templates[0].id!)
+    await store().loadSession(sessionId)
+
+    await store().completeSession(sessionId)
+
+    const session = await db.sessions.get(sessionId)
+    expect(session?.completedAt).toBeDefined()
+  })
+
+  it('updates activeSession in the store', async () => {
+    await store().createTemplate('Push day', ['Bench press'])
+    await store().loadTemplates()
+    const sessionId = await store().startSession(store().templates[0].id!)
+    await store().loadSession(sessionId)
+
+    await store().completeSession(sessionId)
+
+    expect(store().activeSession?.completedAt).toBeDefined()
+  })
+})
+
+describe('deleteSession', () => {
+  it('removes the session and its sets from the database', async () => {
+    await store().createTemplate('Push day', ['Bench press'])
+    await store().loadTemplates()
+    const sessionId = await store().startSession(store().templates[0].id!)
+    await store().loadSession(sessionId)
+    await store().addSet(store().sessionExercises[0].id!, 5, 100)
+
+    await store().deleteSession(sessionId)
+
+    expect(await db.sessions.get(sessionId)).toBeUndefined()
+    expect(await db.sets.count()).toBe(0)
+  })
+
+  it('removes the session from the history in the store', async () => {
+    await store().createTemplate('Push day', ['Bench press'])
+    await store().loadTemplates()
+    const sessionId = await store().startSession(store().templates[0].id!)
+    await store().completeSession(sessionId)
+    await store().loadHistory()
+
+    await store().deleteSession(sessionId)
+
+    expect(store().history).toHaveLength(0)
+  })
+})
+
+describe('deleteTemplate', () => {
+  it('removes the template, its exercises, sessions and sets', async () => {
+    await store().createTemplate('Push day', ['Bench press'])
+    await store().loadTemplates()
+    const templateId = store().templates[0].id!
+    const sessionId = await store().startSession(templateId)
+    await store().loadSession(sessionId)
+    await store().addSet(store().sessionExercises[0].id!, 5, 100)
+
+    await store().deleteTemplate(templateId)
+
+    expect(await db.templates.get(templateId)).toBeUndefined()
+    expect(await db.exercises.where('templateId').equals(templateId).count()).toBe(0)
+    expect(await db.sessions.get(sessionId)).toBeUndefined()
+    expect(await db.sets.count()).toBe(0)
+  })
+
+  it('removes the template from the store', async () => {
+    await store().createTemplate('Push day', ['Bench press'])
+    await store().loadTemplates()
+    const templateId = store().templates[0].id!
+
+    await store().deleteTemplate(templateId)
+
+    expect(store().templates).toHaveLength(0)
+  })
+})
+
 describe('loadHistory', () => {
   it('returns sessions enriched with template name, newest first', async () => {
     await store().createTemplate('Rug & Biceps', ['Deadlift'])
@@ -101,8 +237,10 @@ describe('loadHistory', () => {
     await store().loadTemplates()
 
     const [t1, t2] = store().templates
-    await store().startSession(t1.id!)
-    await store().startSession(t2.id!)
+    const s1 = await store().startSession(t1.id!)
+    const s2 = await store().startSession(t2.id!)
+    await store().completeSession(s1)
+    await store().completeSession(s2)
 
     await store().loadHistory()
 
