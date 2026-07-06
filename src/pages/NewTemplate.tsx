@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { useWorkoutStore } from '../store/workoutStore'
 import Layout from '../components/layout/Layout'
 
+const CATEGORIES = ['KRACHT', 'VOLUME', 'CARDIO', 'MOBILITEIT']
+
 export default function NewTemplate() {
   const navigate = useNavigate()
   const createTemplate = useWorkoutStore((s) => s.createTemplate)
   const [name, setName] = useState('')
   const [exercises, setExercises] = useState<string[]>([''])
+  const [category, setCategory] = useState('')
   const [error, setError] = useState('')
 
   const addExerciseField = () => setExercises((prev) => [...prev, ''])
@@ -28,7 +31,7 @@ export default function NewTemplate() {
       return
     }
     try {
-      await createTemplate(name.trim(), validExercises)
+      await createTemplate(name.trim(), validExercises, category || undefined)
       navigate('/')
     } catch (err) {
       setError('Opslaan mislukt. Probeer het opnieuw.')
@@ -46,9 +49,29 @@ export default function NewTemplate() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="bijv. Rug & Biceps"
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             required
           />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Categorie <span className="text-gray-400 font-normal">(optioneel)</span></label>
+          <div className="flex gap-2 flex-wrap">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setCategory(cat === category ? '' : cat)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
+                  category === cat
+                    ? 'bg-accent text-white border-accent'
+                    : 'bg-white text-gray-600 border-gray-200'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div>
@@ -61,7 +84,7 @@ export default function NewTemplate() {
                   value={ex}
                   onChange={(e) => updateExercise(i, e.target.value)}
                   placeholder={`Oefening ${i + 1}`}
-                  className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                 />
                 {exercises.length > 1 && (
                   <button
@@ -79,13 +102,13 @@ export default function NewTemplate() {
           <button
             type="button"
             onClick={addExerciseField}
-            className="mt-3 text-blue-600 text-sm font-medium"
+            className="mt-3 text-accent text-sm font-medium"
           >
             + Oefening toevoegen
           </button>
         </div>
 
-        <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium">
+        <button type="submit" className="w-full bg-accent text-white py-3 rounded-xl font-medium">
           Opslaan
         </button>
       </form>

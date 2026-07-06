@@ -39,18 +39,21 @@ export default function Footer() {
 
   return (
     <footer className="layout-footer">
-      <NavLink to="/" end className={`${base}${isHome ? ` ${active}` : ''}`}>
-        <HomeIcon />
-        <span>Home</span>
-      </NavLink>
-      <NavLink to="/goals" className={`${base}${isGoals ? ` ${active}` : ''}`}>
-        <GoalsIcon />
-        <span>Doelen</span>
-      </NavLink>
-      <NavLink to="/progress" className={`${base}${isProgress ? ` ${active}` : ''}`}>
-        <ProgressIcon />
-        <span>Progressie</span>
-      </NavLink>
+      <div className="layout-footer__tabs">
+        <NavLink to="/" end className={`${base}${isHome ? ` ${active}` : ''}`}>
+          <HomeIcon />
+          <span>Home</span>
+        </NavLink>
+        <NavLink to="/goals" className={`${base}${isGoals ? ` ${active}` : ''}`}>
+          <GoalsIcon />
+          <span>Doelen</span>
+        </NavLink>
+        <NavLink to="/progress" className={`${base}${isProgress ? ` ${active}` : ''}`}>
+          <ProgressIcon />
+          <span>Progressie</span>
+        </NavLink>
+      </div>
+      <p className="layout-footer__tagline">Blijf consistent — kleine stappen, grote resultaten.</p>
     </footer>
   )
 }

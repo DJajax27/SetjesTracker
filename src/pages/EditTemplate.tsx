@@ -4,6 +4,8 @@ import { db } from '../db/db'
 import { useWorkoutStore } from '../store/workoutStore'
 import Layout from '../components/layout/Layout'
 
+const CATEGORIES = ['KRACHT', 'VOLUME', 'CARDIO', 'MOBILITEIT']
+
 type ExistingExercise = { id: number; name: string }
 
 export default function EditTemplate() {
@@ -12,6 +14,7 @@ export default function EditTemplate() {
   const updateTemplate = useWorkoutStore((s) => s.updateTemplate)
 
   const [name, setName] = useState('')
+  const [category, setCategory] = useState('')
   const [existing, setExisting] = useState<ExistingExercise[]>([])
   const [newExercises, setNewExercises] = useState<string[]>([])
   const [error, setError] = useState('')
@@ -26,6 +29,7 @@ export default function EditTemplate() {
     ]).then(([template, exercises]) => {
       if (!template) { navigate('/'); return }
       setName(template.name)
+      setCategory(template.category ?? '')
       setExisting(exercises.map((ex) => ({ id: ex.id!, name: ex.name })))
       setLoading(false)
     })
@@ -52,7 +56,7 @@ export default function EditTemplate() {
       return
     }
     try {
-      await updateTemplate(Number(id), name.trim(), existing.map((ex) => ex.id), validNew)
+      await updateTemplate(Number(id), name.trim(), existing.map((ex) => ex.id), validNew, category || undefined)
       navigate('/')
     } catch (err) {
       setError('Opslaan mislukt. Probeer het opnieuw.')
@@ -77,9 +81,29 @@ export default function EditTemplate() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
             required
           />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Categorie <span className="text-gray-400 font-normal">(optioneel)</span></label>
+          <div className="flex gap-2 flex-wrap">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setCategory(cat === category ? '' : cat)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
+                  category === cat
+                    ? 'bg-accent text-white border-accent'
+                    : 'bg-white text-gray-600 border-gray-200'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div>
@@ -110,7 +134,7 @@ export default function EditTemplate() {
                   value={ex}
                   onChange={(e) => updateNew(i, e.target.value)}
                   placeholder={`Oefening ${existing.length + i + 1}`}
-                  className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                 />
                 <button
                   type="button"
@@ -127,7 +151,7 @@ export default function EditTemplate() {
           <button
             type="button"
             onClick={addNew}
-            className="mt-3 text-blue-600 text-sm font-medium"
+            className="mt-3 text-accent text-sm font-medium"
           >
             + Oefening toevoegen
           </button>
