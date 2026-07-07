@@ -180,9 +180,9 @@ export default function Home() {
                       </button>
                       <button
                         onClick={() => handleStart(template.id!)}
-                        className="bg-accent text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-1"
+                        className="bg-accent text-white px-4 py-2 rounded-full text-sm font-semibold"
                       >
-                        <span>▶</span> Start
+                        Start
                       </button>
                     </div>
                   </div>
