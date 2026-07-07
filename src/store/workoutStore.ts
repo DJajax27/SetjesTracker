@@ -1,6 +1,5 @@
 import { create } from 'zustand'
-import { db, type WorkoutTemplate, type TemplateExercise, type WorkoutSession, type WorkoutSet } from '../db/db'
-import type { SessionExercise } from '../db/db'
+import { db, type WorkoutTemplate, type TemplateExercise, type WorkoutSession, type WorkoutSet, type SessionExercise } from '../db/db'
 
 interface SessionWithName extends WorkoutSession {
   templateName: string

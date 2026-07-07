@@ -100,12 +100,6 @@ describe('loadSession — previousSetsByExercise', () => {
     await store().createTemplate('Push day', ['Bench press'])
     await store().loadTemplates()
     const templateId = store().templates[0].id!
-    const exerciseId = store().sessionExercises[0]?.id ?? (await (async () => {
-      const firstId = await store().startSession(templateId)
-      await store().loadSession(firstId)
-      return store().sessionExercises[0].id!
-    })())
-
     const firstId = await store().startSession(templateId)
     await store().loadSession(firstId)
     const exId = store().sessionExercises[0].id!
