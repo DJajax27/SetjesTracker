@@ -51,7 +51,7 @@
 
 ---
 
-## Fase 5 — Diepgang & 3D-layout
+## ~~Fase 5 — Diepgang & 3D-layout~~ — Afgerond
 
 > Doel: de app visueel meer diepte en karakter geven via subtiele 3D-effecten, schaduwlagen en spatiale hiërarchie — zodat kaarten, knoppen en panelen "zweven" in plaats van flat te zijn.
 
