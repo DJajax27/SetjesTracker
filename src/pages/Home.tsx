@@ -109,25 +109,25 @@ export default function Home() {
             + Nieuw
           </button>
         </div>
-      </div>
 
-      {/* Main content */}
-      <main className="layout-main space-y-6">
-        {/* Stat cards */}
-        <div className="grid grid-cols-3 gap-2">
+        {/* Glassmorphism stat-cards in hero */}
+        <div className="grid grid-cols-3 gap-2 mt-5 relative">
           {[
             { icon: '🔥', label: 'STREAK', value: `${streak} dgn` },
             { icon: '📅', label: 'DEZE WEEK', value: `${thisWeek}x` },
             { icon: '⏱', label: 'TOTAAL', value: totalTime },
           ].map((stat) => (
-            <div key={stat.label} className="bg-white rounded-xl p-3 shadow-sm border text-center">
+            <div key={stat.label} className="stat-card rounded-xl p-3 text-center">
               <p className="text-base mb-0.5">{stat.icon}</p>
               <p className="text-[0.625rem] font-semibold text-gray-400 uppercase tracking-wide">{stat.label}</p>
               <p className="text-sm font-bold mt-0.5 text-gray-800">{stat.value}</p>
             </div>
           ))}
         </div>
+      </div>
 
+      {/* Main content */}
+      <main className="layout-main space-y-6">
         {/* Template list */}
         <div>
           <div className="flex items-center justify-between mb-3">
@@ -147,7 +147,7 @@ export default function Home() {
                 const count = exerciseCounts[template.id!] ?? 0
                 const duration = count > 0 ? Math.max(15, Math.ceil(count * 8 / 5) * 5) : 15
                 return (
-                  <div key={template.id} className="bg-white rounded-xl p-4 shadow-sm border flex items-center gap-3">
+                  <div key={template.id} className="bg-white rounded-xl p-4 card-shadow flex items-center gap-3">
                     <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center shrink-0">
                       <DumbbellIcon />
                     </div>

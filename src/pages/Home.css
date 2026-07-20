@@ -1,19 +1,33 @@
 .home-hero {
   position: relative;
-  padding: 1.5rem 1rem 1.25rem;
+  padding: 1.5rem 1rem 1.5rem;
   background: white;
   overflow: hidden;
 }
 
+/* Primary gradient — top-right */
 .home-hero::before {
   content: '';
   position: absolute;
-  top: -60px;
-  right: -60px;
-  width: 240px;
-  height: 240px;
+  top: -50px;
+  right: -50px;
+  width: 280px;
+  height: 280px;
   background: radial-gradient(circle, var(--color-hero-from) 0%, transparent 65%);
   pointer-events: none;
+}
+
+/* Secondary gradient — bottom-left (for stat-card glassmorphism depth) */
+.home-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: -40px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, var(--color-hero-from) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0.35;
 }
 
 .home-hero__top {
@@ -67,15 +81,30 @@
   background: var(--color-accent-dark);
 }
 
+/* Glassmorphism stat-cards */
+.stat-card {
+  background: rgba(255, 255, 255, 0.6);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .stat-card {
+    background: rgba(255, 255, 255, 0.95);
+  }
+}
+
 @media (min-width: 640px) {
   .home-hero {
-    padding: 2rem 1.5rem 1.5rem;
+    padding: 2rem 1.5rem 1.75rem;
   }
 
   .home-hero::before {
-    width: 300px;
-    height: 300px;
-    top: -80px;
-    right: -80px;
+    width: 340px;
+    height: 340px;
+    top: -70px;
+    right: -70px;
   }
 }

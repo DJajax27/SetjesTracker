@@ -80,7 +80,7 @@ export default function Goals() {
             return (
               <div
                 key={goal.id}
-                className={`bg-white rounded-xl p-4 shadow-sm border transition-opacity ${done ? 'opacity-60' : ''}`}
+                className={`bg-white rounded-xl p-4 card-shadow transition-opacity ${done ? 'opacity-60' : ''}`}
               >
                 <div className="flex items-start gap-3">
                   <button

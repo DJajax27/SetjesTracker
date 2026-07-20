@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-20 — Fase 5: Diepgang & 3D-layout
+- Glassmorphism stat-cards: semi-transparant met backdrop-filter blur op de hero-gradiënt
+- Hero uitgebreid met tweede gradiënt (bottom-left) voor meer glasdiepte
+- Stat-cards verplaatst naar hero-sectie zodat blur-effect zichtbaar is
+- Frosted glass tab-bar: backdrop-filter blur(16px) met Firefox-fallback
+- Gelaagde card-shadow op template- en doel-kaarten (vervangt shadow-sm + border)
+- Verbeterde BottomSheet-schaduwen: sheet-shadow (pop-in) en sheet-shadow-up (slide-up)
+
 ## 2026-07-06 — Fase 4: Design refresh
 - Vervang blauw kleurpalet door bordeauxrood (#8B1E1E) in alle design tokens
 - Voeg `accent-light` (#FFE4E6) toe voor badges en actieve tab
