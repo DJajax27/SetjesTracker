@@ -51,7 +51,20 @@
 
 ---
 
-## Fase 5 — Progressie & analytics
+## Fase 5 — Diepgang & 3D-layout
+
+> Doel: de app visueel meer diepte en karakter geven via subtiele 3D-effecten, schaduwlagen en spatiale hiërarchie — zodat kaarten, knoppen en panelen "zweven" in plaats van flat te zijn.
+
+1. Kaartschaduwen — meerdere schaduwniveaus (ambient + directional) voor een realistisch zweefeffect op template- en doel-kaarten
+2. Hero-diepte — parallax of lichte perspectief-kanteling op de hero-header bij scrollen
+3. Interactieve 3D-druk — knoppen en kaarten reageren met een subtiele indruk-animatie (scale + shadow-vermindering) bij aanraken
+4. Zwevende tab-bar — verhoogde footer met blur-achtergrond (backdrop-filter) en sterkere schaduw omhoog
+5. Modale diepte — bottom sheets en pop-ups krijgen een diepere schaduw en lichte schaalverkleining van de achtergrond bij openen
+6. Glassmorphism accenten — semi-transparante achtergronden met blur op de stat-cards of hero-overlay
+
+---
+
+## Fase 6 — Progressie & analytics
 
 > Doel: inzicht geven in verbetering over tijd via grafieken en statistieken.
 
