@@ -1,17 +1,34 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useWorkoutStore } from '../store/workoutStore'
 import Layout from '../components/layout/Layout'
+import { BookOpen } from 'lucide-react'
 
 const CATEGORIES = ['KRACHT', 'VOLUME', 'CARDIO', 'MOBILITEIT']
+const DRAFT_KEY = 'draftNewTemplate'
 
 export default function NewTemplate() {
   const navigate = useNavigate()
+  const location = useLocation()
   const createTemplate = useWorkoutStore((s) => s.createTemplate)
   const [name, setName] = useState('')
   const [exercises, setExercises] = useState<string[]>([''])
   const [category, setCategory] = useState('')
   const [error, setError] = useState('')
+
+  // Restore draft + picked exercise when returning from ExercisePicker
+  useEffect(() => {
+    const state = location.state as { pickedExercise?: string } | null
+    const raw = sessionStorage.getItem(DRAFT_KEY)
+    if (raw && state?.pickedExercise) {
+      const draft = JSON.parse(raw) as { name: string; exercises: string[]; category: string }
+      setName(draft.name)
+      setCategory(draft.category)
+      setExercises([...draft.exercises.filter((e) => e.trim()), state.pickedExercise])
+      sessionStorage.removeItem(DRAFT_KEY)
+      navigate(location.pathname, { replace: true, state: null })
+    }
+  }, [])
 
   const addExerciseField = () => setExercises((prev) => [...prev, ''])
 
@@ -39,8 +56,13 @@ export default function NewTemplate() {
     }
   }
 
+  function openPicker() {
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ name, exercises, category }))
+    navigate(`/exercise-picker?returnTo=/template/new`)
+  }
+
   return (
-    <Layout title="Nieuwe training" back>
+    <Layout title="Nieuwe training" back backTo="/">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Naam</label>
@@ -101,12 +123,23 @@ export default function NewTemplate() {
             ))}
           </div>
           {error && <p className="mt-2 text-sm text-danger">{error}</p>}
+
+          {/* Brede bibliotheekknop */}
+          <button
+            type="button"
+            onClick={openPicker}
+            className="mt-3 w-full flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-3 text-sm font-medium text-gray-900 hover:bg-gray-50 transition"
+          >
+            <BookOpen className="h-4 w-4 text-gray-500" />
+            Kies uit bibliotheek
+          </button>
+
           <button
             type="button"
             onClick={addExerciseField}
-            className="mt-3 text-gray-900 text-sm font-medium"
+            className="mt-2 text-gray-900 text-sm font-medium"
           >
-            + Oefening toevoegen
+            + Handmatig toevoegen
           </button>
         </div>
 

@@ -129,9 +129,8 @@ export default function Goals() {
             </p>
           </div>
         ) : (
-          <div className="mt-4 rounded-2xl border border-border bg-surface-elevated overflow-hidden">
-            <ul>
-              {sorted.map((goal, index) => {
+          <ul className="mt-4 space-y-2">
+              {sorted.map((goal) => {
                 const done = isGoalDone(goal)
                 const progress = goalProgress(goal)
                 const weekCount = goal.type === 'weekly' ? thisWeekCompletions(goal) : 0
@@ -141,7 +140,7 @@ export default function Goals() {
                 return (
                   <li
                     key={goal.id}
-                    className={`p-4 transition-opacity ${index > 0 ? 'border-t border-border' : ''} ${done && goal.type !== 'recurring' ? 'opacity-60' : ''}`}
+                    className={`rounded-2xl border border-border bg-surface-elevated p-4 transition-opacity ${done && goal.type !== 'recurring' ? 'opacity-60' : ''}`}
                   >
                     <div className="flex items-start gap-4">
 
@@ -252,8 +251,7 @@ export default function Goals() {
                   </li>
                 )
               })}
-            </ul>
-          </div>
+          </ul>
         )}
       </div>
 

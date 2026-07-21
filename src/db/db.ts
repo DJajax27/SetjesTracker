@@ -37,6 +37,13 @@ export interface SessionExercise {
   name: string
 }
 
+export interface ExerciseLibraryItem {
+  id?: number
+  name: string
+  muscleGroup: string
+  createdAt: string
+}
+
 export interface Goal {
   id?: number
   name: string
@@ -59,6 +66,7 @@ class WorkoutDB extends Dexie {
   sets!: Table<WorkoutSet>
   sessionExercises!: Table<SessionExercise>
   goals!: Table<Goal>
+  exerciseLibrary!: Table<ExerciseLibraryItem>
 
   constructor() {
     super('WorkoutLogger')
@@ -80,6 +88,9 @@ class WorkoutDB extends Dexie {
     })
     this.version(4).stores({
       goals: '++id',
+    })
+    this.version(5).stores({
+      exerciseLibrary: '++id, muscleGroup',
     })
   }
 }

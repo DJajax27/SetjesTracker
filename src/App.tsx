@@ -10,6 +10,7 @@ import Goals from './pages/Goals'
 import GoalNew from './pages/GoalNew'
 import GoalEdit from './pages/GoalEdit'
 import Progress from './pages/Progress'
+import ExercisePicker from './pages/ExercisePicker'
 import { registerServiceWorker, scheduleGoalNotifications } from './services/notificationService'
 import { db } from './db/db'
 
@@ -34,6 +35,7 @@ export default function App() {
       <Route path="/goals/new" element={<GoalNew />} />
       <Route path="/goals/:id/edit" element={<GoalEdit />} />
       <Route path="/progress" element={<Progress />} />
+      <Route path="/exercise-picker" element={<ExercisePicker />} />
     </Routes>
   )
 }
