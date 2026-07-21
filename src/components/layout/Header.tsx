@@ -5,16 +5,17 @@ interface HeaderProps {
   title: string
   subtitle?: string
   back?: boolean
+  backTo?: string
   actions?: React.ReactNode
 }
 
-export default function Header({ title, subtitle, back, actions }: HeaderProps) {
+export default function Header({ title, subtitle, back, backTo, actions }: HeaderProps) {
   const navigate = useNavigate()
 
   return (
     <header className="layout-header">
       {back && (
-        <button className="layout-header__back" onClick={() => navigate(-1)}>
+        <button className="layout-header__back" onClick={() => backTo ? navigate(backTo) : navigate(-1)}>
           ← Terug
         </button>
       )}

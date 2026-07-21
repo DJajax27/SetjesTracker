@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { db } from '../db/db'
 import { useWorkoutStore } from '../store/workoutStore'
 import Layout from '../components/layout/Layout'
+import { BookOpen } from 'lucide-react'
 
 const CATEGORIES = ['KRACHT', 'VOLUME', 'CARDIO', 'MOBILITEIT']
 
@@ -11,6 +12,7 @@ type ExistingExercise = { id: number; name: string }
 export default function EditTemplate() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const location = useLocation()
   const updateTemplate = useWorkoutStore((s) => s.updateTemplate)
 
   const [name, setName] = useState('')
@@ -34,6 +36,15 @@ export default function EditTemplate() {
       setLoading(false)
     })
   }, [id, navigate])
+
+  // Add exercise returned from picker
+  useEffect(() => {
+    const state = location.state as { pickedExercise?: string } | null
+    if (state?.pickedExercise && !loading) {
+      setNewExercises((prev) => [...prev, state.pickedExercise!])
+      navigate(location.pathname, { replace: true, state: null })
+    }
+  }, [location.state, loading])
 
   const removeExisting = (exId: number) =>
     setExisting((prev) => prev.filter((ex) => ex.id !== exId))
@@ -64,16 +75,20 @@ export default function EditTemplate() {
     }
   }
 
+  function openPicker() {
+    navigate(`/exercise-picker?returnTo=/template/${id}/edit`)
+  }
+
   if (loading) {
     return (
-      <Layout title="Training bewerken" back>
+      <Layout title="Training bewerken" back backTo="/">
         <p className="text-center text-gray-400 mt-16">Laden…</p>
       </Layout>
     )
   }
 
   return (
-    <Layout title="Training bewerken" back>
+    <Layout title="Training bewerken" back backTo="/">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Naam</label>
@@ -150,8 +165,19 @@ export default function EditTemplate() {
             ))}
           </div>
           {error && <p className="mt-2 text-sm text-danger">{error}</p>}
-          <button type="button" onClick={addNew} className="mt-3 text-gray-900 text-sm font-medium">
-            + Oefening toevoegen
+
+          {/* Brede bibliotheekknop */}
+          <button
+            type="button"
+            onClick={openPicker}
+            className="mt-3 w-full flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-3 text-sm font-medium text-gray-900 hover:bg-gray-50 transition"
+          >
+            <BookOpen className="h-4 w-4 text-gray-500" />
+            Kies uit bibliotheek
+          </button>
+
+          <button type="button" onClick={addNew} className="mt-2 text-gray-900 text-sm font-medium">
+            + Handmatig toevoegen
           </button>
         </div>
 

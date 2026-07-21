@@ -64,7 +64,22 @@
 
 ---
 
-## Fase 6 — Progressie & analytics
+## ~~Fase 6 — Oefeningen bibliotheek~~ — Afgerond
+
+> Doel: oefeningen onthouden en snel terugvinden via een doorzoekbare bibliotheek, zodat je niet elke keer opnieuw hoeft te typen.
+
+1. ~~Oefeningen-database — 100 meest gebruikte fitnesssoefeningen ingebakken in de app, elk met naam en spiergroep~~
+2. ~~Brede "Oefening toevoegen"-balk — prominente knop onderaan het template-bewerkscherm die naar de bibliotheek navigeert~~
+3. ~~Bibliotheekscherm — volledige lijst met oefeningen, bovenin een zoekbalk voor direct filteren op naam~~
+4. ~~Sortering: Alfabetisch — standaardweergave A–Z~~
+5. ~~Sortering: Spiergroep — oefeningen gegroepeerd per body part (borst, rug, benen, schouders, armen, core, cardio)~~
+6. ~~Sortering: Recent — oefeningen die de gebruiker al eerder heeft gelogd, gesorteerd op meest recent gebruikt~~
+7. ~~Oefening selecteren — tikt de gebruiker een oefening aan, dan wordt hij direct toegevoegd aan het template en keert de app terug~~
+8. ~~Eigen oefeningen — gebruiker kan een nieuwe oefening aanmaken vanuit de bibliotheek als hij er niet tussen staat~~
+
+---
+
+## Fase 7 — Progressie & analytics
 
 > Doel: inzicht geven in verbetering over tijd via grafieken en statistieken.
 
