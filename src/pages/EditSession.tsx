@@ -152,23 +152,20 @@ export default function EditSession() {
     <Layout title="Sessie bewerken" back>
       <div className="space-y-5">
         {exercises.map((ex, exIdx) => (
-          <div key={exIdx} className="bg-white rounded-xl shadow-sm border p-4">
+          <div key={exIdx} className="bg-white rounded-xl border border-gray-100 p-4">
             {ex.isNew ? (
               <input
                 type="text"
                 value={ex.name}
                 onChange={(e) => updateExerciseName(exIdx, e.target.value)}
                 placeholder="Naam oefening"
-                className="w-full font-semibold text-base mb-3 border-b pb-1 focus:outline-none focus:border-accent"
+                className="w-full font-medium text-base mb-3 border-b border-gray-200 pb-1 focus:outline-none focus:border-gray-900"
               />
             ) : (
               <div className="flex items-center justify-between mb-3">
-                <p className="font-semibold">{ex.name}</p>
-                <button
-                  onClick={() => removeExercise(exIdx)}
-                  className="text-danger text-sm"
-                >
-                  Oefening verwijderen
+                <p className="font-medium text-gray-900">{ex.name}</p>
+                <button onClick={() => removeExercise(exIdx)} className="text-danger text-sm">
+                  Verwijderen
                 </button>
               </div>
             )}
@@ -185,7 +182,7 @@ export default function EditSession() {
                       onChange={(e) => updateSet(exIdx, setIdx, 'reps', e.target.value)}
                       placeholder="5"
                       min="1"
-                      className="w-full border rounded-lg px-2 py-1.5 text-sm"
+                      className="w-full border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-900"
                     />
                   </div>
                   <div className="flex-1">
@@ -197,12 +194,12 @@ export default function EditSession() {
                       placeholder="60"
                       min="0"
                       step="0.5"
-                      className="w-full border rounded-lg px-2 py-1.5 text-sm"
+                      className="w-full border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-gray-900"
                     />
                   </div>
                   <button
                     onClick={() => removeSet(exIdx, setIdx)}
-                    className="text-danger text-lg leading-none min-h-[44px] min-w-[44px] flex items-center justify-center flex-shrink-0"
+                    className="text-gray-400 hover:text-danger text-lg leading-none min-h-[44px] min-w-[44px] flex items-center justify-center flex-shrink-0 transition-colors"
                     aria-label="Set verwijderen"
                   >
                     ×
@@ -214,7 +211,7 @@ export default function EditSession() {
             <button
               type="button"
               onClick={() => addSet(exIdx)}
-              className="text-accent text-sm font-medium"
+              className="text-gray-700 text-sm font-medium"
             >
               + Set toevoegen
             </button>
@@ -224,7 +221,7 @@ export default function EditSession() {
         <button
           type="button"
           onClick={addExercise}
-          className="w-full border border-dashed border-gray-300 text-gray-500 py-3 rounded-xl text-sm"
+          className="w-full border border-dashed border-gray-300 text-gray-500 py-3 rounded-xl text-sm hover:border-gray-400 transition-colors"
         >
           + Oefening toevoegen
         </button>
@@ -233,7 +230,7 @@ export default function EditSession() {
       <div className="mt-6">
         <button
           onClick={handleSave}
-          className="w-full bg-accent text-white py-3 rounded-xl font-semibold text-base"
+          className="w-full bg-gray-900 text-white py-3 rounded-xl font-semibold text-base transition hover:opacity-90"
         >
           Opslaan
         </button>

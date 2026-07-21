@@ -41,8 +41,12 @@ export interface Goal {
   id?: number
   name: string
   description: string
-  type: 'deadline' | 'recurring'
+  type: 'deadline' | 'recurring' | 'weekly'
   targetDate?: string
+  weeklyTarget?: number
+  targetValue?: number
+  currentValue?: number
+  unit?: string
   completedDates: string[]
   notifyEnabled?: boolean
   notifyTime?: string

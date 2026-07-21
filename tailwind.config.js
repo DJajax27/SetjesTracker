@@ -24,6 +24,14 @@ export default {
       },
       colors: {
         primary: 'var(--color-primary)',
+        foreground: 'var(--color-foreground)',
+        'muted-foreground': 'var(--color-muted-foreground)',
+        surface: {
+          DEFAULT: 'var(--color-surface)',
+          elevated: 'var(--color-surface-elevated)',
+        },
+        muted: 'var(--color-muted)',
+        border: 'var(--color-border)',
         accent: 'var(--color-accent)',
         'accent-light': 'var(--color-accent-light)',
         danger: 'var(--color-danger)',

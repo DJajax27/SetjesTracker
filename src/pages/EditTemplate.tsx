@@ -81,13 +81,15 @@ export default function EditTemplate() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Categorie <span className="text-gray-400 font-normal">(optioneel)</span></label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Categorie <span className="text-gray-400 font-normal">(optioneel)</span>
+          </label>
           <div className="flex gap-2 flex-wrap">
             {CATEGORIES.map((cat) => (
               <button
@@ -96,8 +98,8 @@ export default function EditTemplate() {
                 onClick={() => setCategory(cat === category ? '' : cat)}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
                   category === cat
-                    ? 'bg-accent text-white border-accent'
-                    : 'bg-white text-gray-600 border-gray-200'
+                    ? 'bg-gray-900 text-white border-gray-900'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
                 }`}
               >
                 {cat}
@@ -115,12 +117,12 @@ export default function EditTemplate() {
                   type="text"
                   value={ex.name}
                   readOnly
-                  className="flex-1 border rounded-lg px-3 py-2 text-sm bg-gray-50 text-gray-600"
+                  className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm bg-gray-50 text-gray-600"
                 />
                 <button
                   type="button"
                   onClick={() => removeExisting(ex.id)}
-                  className="text-red-400 px-2 text-xl leading-none"
+                  className="text-gray-400 hover:text-danger px-2 text-xl leading-none transition-colors"
                   aria-label="Oefening verwijderen"
                 >
                   ×
@@ -134,12 +136,12 @@ export default function EditTemplate() {
                   value={ex}
                   onChange={(e) => updateNew(i, e.target.value)}
                   placeholder={`Oefening ${existing.length + i + 1}`}
-                  className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+                  className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
                 />
                 <button
                   type="button"
                   onClick={() => removeNew(i)}
-                  className="text-red-400 px-2 text-xl leading-none"
+                  className="text-gray-400 hover:text-danger px-2 text-xl leading-none transition-colors"
                   aria-label="Oefening verwijderen"
                 >
                   ×
@@ -147,17 +149,13 @@ export default function EditTemplate() {
               </div>
             ))}
           </div>
-          {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
-          <button
-            type="button"
-            onClick={addNew}
-            className="mt-3 text-accent text-sm font-medium"
-          >
+          {error && <p className="mt-2 text-sm text-danger">{error}</p>}
+          <button type="button" onClick={addNew} className="mt-3 text-gray-900 text-sm font-medium">
             + Oefening toevoegen
           </button>
         </div>
 
-        <button type="submit" className="w-full bg-accent text-white py-3 rounded-xl font-medium">
+        <button type="submit" className="w-full bg-gray-900 text-white py-3 rounded-xl font-medium transition hover:opacity-90">
           Opslaan
         </button>
       </form>
