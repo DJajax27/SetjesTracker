@@ -1,11 +1,15 @@
 import { create } from 'zustand'
 import { supabase } from '../lib/supabase'
 import { syncOnLogin } from '../lib/sync'
-import type { User, Session } from '@supabase/supabase-js'
+
+interface AuthUser {
+  id: string
+  email?: string
+}
 
 interface AuthStore {
-  user: User | null
-  session: Session | null
+  user: AuthUser | null
+  session: any | null
   loading: boolean
   initialized: boolean
   initialize: () => void
@@ -23,10 +27,11 @@ export const useAuthStore = create<AuthStore>((set) => ({
   initialized: false,
 
   initialize: () => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data }: any) => {
+      const session = data?.session ?? null
       set({ session, user: session?.user ?? null, initialized: true })
     })
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabase.auth.onAuthStateChange((event: string, session: any) => {
       set({ session, user: session?.user ?? null, initialized: true })
       if (event === 'SIGNED_IN' && session) {
         syncOnLogin(session.user.id)
@@ -36,15 +41,15 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   signUp: async (email, password) => {
     set({ loading: true })
-    const { data, error } = await supabase.auth.signUp({ email, password })
+    const { data, error } = await supabase.auth.signUp({ email, password }) as any
     set({ loading: false })
     if (error) return { error: error.message, needsConfirmation: false }
-    return { error: null, needsConfirmation: !data.session }
+    return { error: null, needsConfirmation: !data?.session }
   },
 
   signIn: async (email, password) => {
     set({ loading: true })
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { error } = await supabase.auth.signInWithPassword({ email, password }) as any
     set({ loading: false })
     return error?.message ?? null
   },
@@ -57,12 +62,12 @@ export const useAuthStore = create<AuthStore>((set) => ({
   resetPassword: async (email) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/`,
-    })
+    }) as any
     return error?.message ?? null
   },
 
   deleteAccount: async () => {
-    const { error } = await supabase.rpc('delete_current_user')
+    const { error } = await supabase.rpc('delete_current_user') as any
     if (error) return error.message
     await supabase.auth.signOut()
     return null

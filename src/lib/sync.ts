@@ -69,21 +69,24 @@ export async function syncOnLogin(userId: string): Promise<void> {
 }
 
 export function triggerPush(): void {
-  supabase.auth.getSession().then(({ data: { session } }) => {
+  supabase.auth.getSession().then(({ data }: any) => {
+    const session = data?.session
     if (!session) return
     pushAll(session.user.id).catch(() => {})
   })
 }
 
 export function deleteCloud(supaTable: string, id: number): void {
-  supabase.auth.getSession().then(({ data: { session } }) => {
+  supabase.auth.getSession().then(({ data }: any) => {
+    const session = data?.session
     if (!session) return
     supabase.from(supaTable).delete().eq('user_id', session.user.id).eq('id', id).then(() => {})
   })
 }
 
 export function deleteCloudBy(supaTable: string, col: string, val: number): void {
-  supabase.auth.getSession().then(({ data: { session } }) => {
+  supabase.auth.getSession().then(({ data }: any) => {
+    const session = data?.session
     if (!session) return
     supabase.from(supaTable).delete().eq('user_id', session.user.id).eq(col, val).then(() => {})
   })
@@ -91,7 +94,8 @@ export function deleteCloudBy(supaTable: string, col: string, val: number): void
 
 export function deleteCloudByMany(supaTable: string, col: string, vals: number[]): void {
   if (!vals.length) return
-  supabase.auth.getSession().then(({ data: { session } }) => {
+  supabase.auth.getSession().then(({ data }: any) => {
+    const session = data?.session
     if (!session) return
     supabase.from(supaTable).delete().eq('user_id', session.user.id).in(col, vals).then(() => {})
   })
