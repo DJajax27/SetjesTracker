@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { db, type WorkoutTemplate, type TemplateExercise, type WorkoutSession, type WorkoutSet } from '../db/db'
-import { triggerPush, deleteCloud, deleteCloudBy, deleteCloudByMany } from '../lib/sync'
+import { triggerPush, triggerSync, deleteCloud, deleteCloudBy, deleteCloudByMany } from '../lib/sync'
 
 interface SessionWithName extends WorkoutSession {
   templateName: string
@@ -227,7 +227,7 @@ export const useWorkoutStore = create<WorkoutStore>((set, get) => ({
       activeSession:
         s.activeSession?.id === sessionId ? { ...s.activeSession, completedAt: now } : s.activeSession,
     }))
-    triggerPush()
+    triggerSync()
   },
 
   deleteSession: async (sessionId) => {

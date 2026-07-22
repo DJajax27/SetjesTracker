@@ -76,6 +76,16 @@ export function triggerPush(): void {
   })
 }
 
+export function triggerSync(): void {
+  supabase.auth.getSession().then(({ data }: any) => {
+    const session = data?.session
+    if (!session) return
+    pushAll(session.user.id)
+      .then(() => pullAll(session.user.id))
+      .catch(() => {})
+  })
+}
+
 export function deleteCloud(supaTable: string, id: number): void {
   supabase.auth.getSession().then(({ data }: any) => {
     const session = data?.session
