@@ -79,7 +79,22 @@
 
 ---
 
-## Fase 7 — Progressie & analytics
+## ~~Fase 7 — User accounts met Supabase~~ — Afgerond
+
+> Doel: gebruikers kunnen een account aanmaken zodat data in de cloud opgeslagen wordt en op meerdere apparaten beschikbaar is.
+
+1. ~~Supabase project opzetten — Auth + database schema inrichten~~
+2. ~~Registreren & inloggen — e-mail/wachtwoord authenticatie via Supabase Auth~~
+3. ~~Sessie-beheer — ingelogde staat bewaren, automatisch uitloggen bij sessie-verloop~~
+4. ~~Data-migratie — bestaande lokale Dexie.js data uploaden naar Supabase Postgres bij eerste login~~
+5. ~~Realtime sync — trainingen, templates en doelen opslaan in Supabase in plaats van alleen lokaal~~
+6. ~~Offline-first fallback — lokale Dexie.js cache behouden; sync zodra er verbinding is~~
+7. ~~Accountpagina — ingelogde gebruiker tonen, uitloggen, accountverwijdering~~
+8. ~~Row-level security — elke gebruiker ziet alleen zijn eigen data (Supabase RLS policies)~~
+
+---
+
+## Fase 8 — Progressie & analytics
 
 > Doel: inzicht geven in verbetering over tijd via grafieken en statistieken.
 

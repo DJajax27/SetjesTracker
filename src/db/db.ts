@@ -4,6 +4,7 @@ export interface WorkoutTemplate {
   id?: number
   name: string
   category?: string
+  updatedAt?: string
 }
 
 export interface TemplateExercise {
@@ -11,6 +12,7 @@ export interface TemplateExercise {
   templateId: number
   name: string
   order: number
+  updatedAt?: string
 }
 
 export interface WorkoutSession {
@@ -19,6 +21,7 @@ export interface WorkoutSession {
   date: string
   completedAt?: string
   customName?: string
+  updatedAt?: string
 }
 
 export interface WorkoutSet {
@@ -29,12 +32,14 @@ export interface WorkoutSet {
   reps: number
   weight: number
   unit: 'kg'
+  updatedAt?: string
 }
 
 export interface SessionExercise {
   id?: number
   sessionId: number
   name: string
+  updatedAt?: string
 }
 
 export interface ExerciseLibraryItem {
@@ -42,6 +47,7 @@ export interface ExerciseLibraryItem {
   name: string
   muscleGroup: string
   createdAt: string
+  updatedAt?: string
 }
 
 export interface Goal {
@@ -57,6 +63,7 @@ export interface Goal {
   completedDates: string[]
   notifyEnabled?: boolean
   notifyTime?: string
+  updatedAt?: string
 }
 
 class WorkoutDB extends Dexie {
