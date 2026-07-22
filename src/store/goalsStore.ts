@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { db, type Goal } from '../db/db'
+import { triggerPush, deleteCloud } from '../lib/sync'
 
 function toDateKey(d: Date): string {
   return d.toISOString().slice(0, 10)
@@ -44,21 +45,26 @@ export const useGoalsStore = create<GoalsStore>((set, get) => ({
   },
 
   createGoal: async (data) => {
-    const id = (await db.goals.add({ ...data, completedDates: [] })) as number
+    const now = new Date().toISOString()
+    const id = (await db.goals.add({ ...data, completedDates: [], updatedAt: now })) as number
     const goal = await db.goals.get(id)
     if (goal) set((s) => ({ goals: [...s.goals, goal] }))
+    triggerPush()
   },
 
   updateGoal: async (id, data) => {
-    await db.goals.update(id, data)
+    const now = new Date().toISOString()
+    await db.goals.update(id, { ...data, updatedAt: now })
     set((s) => ({
       goals: s.goals.map((g) => (g.id === id ? { ...g, ...data } : g)),
     }))
+    triggerPush()
   },
 
   removeGoal: async (id) => {
     await db.goals.delete(id)
     set((s) => ({ goals: s.goals.filter((g) => g.id !== id) }))
+    deleteCloud('goals', id)
   },
 
   toggleGoalToday: async (id) => {
@@ -68,10 +74,12 @@ export const useGoalsStore = create<GoalsStore>((set, get) => ({
     const completedDates = goal.completedDates.includes(today)
       ? goal.completedDates.filter((d) => d !== today)
       : [...goal.completedDates, today]
-    await db.goals.update(id, { completedDates })
+    const now = new Date().toISOString()
+    await db.goals.update(id, { completedDates, updatedAt: now })
     set((s) => ({
       goals: s.goals.map((g) => (g.id === id ? { ...g, completedDates } : g)),
     }))
+    triggerPush()
   },
 
   incrementGoalToday: async (id) => {
@@ -79,10 +87,12 @@ export const useGoalsStore = create<GoalsStore>((set, get) => ({
     const goal = get().goals.find((g) => g.id === id)
     if (!goal) return
     const completedDates = [...goal.completedDates, today]
-    await db.goals.update(id, { completedDates })
+    const now = new Date().toISOString()
+    await db.goals.update(id, { completedDates, updatedAt: now })
     set((s) => ({
       goals: s.goals.map((g) => (g.id === id ? { ...g, completedDates } : g)),
     }))
+    triggerPush()
   },
 
   decrementGoalToday: async (id) => {
@@ -92,16 +102,20 @@ export const useGoalsStore = create<GoalsStore>((set, get) => ({
     const lastIdx = goal.completedDates.lastIndexOf(today)
     if (lastIdx === -1) return
     const completedDates = goal.completedDates.filter((_, i) => i !== lastIdx)
-    await db.goals.update(id, { completedDates })
+    const now = new Date().toISOString()
+    await db.goals.update(id, { completedDates, updatedAt: now })
     set((s) => ({
       goals: s.goals.map((g) => (g.id === id ? { ...g, completedDates } : g)),
     }))
+    triggerPush()
   },
 
   updateGoalCurrentValue: async (id, value) => {
-    await db.goals.update(id, { currentValue: value })
+    const now = new Date().toISOString()
+    await db.goals.update(id, { currentValue: value, updatedAt: now })
     set((s) => ({
       goals: s.goals.map((g) => (g.id === id ? { ...g, currentValue: value } : g)),
     }))
+    triggerPush()
   },
 }))

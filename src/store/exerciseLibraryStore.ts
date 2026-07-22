@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { db } from '../db/db'
 import { EXERCISES } from '../data/exercises'
+import { triggerPush, deleteCloud } from '../lib/sync'
 import type { ExerciseLibraryItem } from '../db/db'
 import type { MuscleGroup } from '../data/exercises'
 
@@ -20,20 +21,24 @@ export const useExerciseLibraryStore = create<ExerciseLibraryStore>((set) => ({
   },
 
   addCustomExercise: async (name, muscleGroup) => {
+    const now = new Date().toISOString()
     const item: ExerciseLibraryItem = {
       name: name.trim(),
       muscleGroup,
-      createdAt: new Date().toISOString(),
+      createdAt: now,
+      updatedAt: now,
     }
     const id = (await db.exerciseLibrary.add(item)) as number
     const saved = { ...item, id }
     set((s) => ({ customExercises: [...s.customExercises, saved] }))
+    triggerPush()
     return saved
   },
 
   removeCustomExercise: async (id) => {
     await db.exerciseLibrary.delete(id)
     set((s) => ({ customExercises: s.customExercises.filter((e) => e.id !== id) }))
+    deleteCloud('exercise_library', id)
   },
 }))
 

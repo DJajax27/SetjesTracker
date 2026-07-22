@@ -1,6 +1,6 @@
 import './Footer.css'
 import { NavLink } from 'react-router-dom'
-import { Home, Target, Activity } from 'lucide-react'
+import { Home, Target, Activity, User } from 'lucide-react'
 
 export default function Footer() {
   return (
@@ -16,6 +16,10 @@ export default function Footer() {
       <NavLink to="/progress" className={({ isActive }) => `footer-tab${isActive ? ' footer-tab--active' : ''}`}>
         <Activity className="h-4 w-4" />
         Progressie
+      </NavLink>
+      <NavLink to="/account" className={({ isActive }) => `footer-tab${isActive ? ' footer-tab--active' : ''}`}>
+        <User className="h-4 w-4" />
+        Account
       </NavLink>
     </nav>
   )
